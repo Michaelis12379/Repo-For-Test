@@ -1,0 +1,121 @@
+Name: Michael Estevez
+12/10/24                      H  Adv. Comp Sci Assessment - Dec 2024
+Honor Code:  Sign your name below to indicate you are abiding by the school Honor Code.
+
+Name: Michael Estevez
+
+
+You are writing a D&D game. For this assignment, write a program using good OOP practices in the language of your choice that implements the following: 
+
+
+
+
+
+
+Two players that start with 100 hit points, and 10 gold pieces each.
+
+
+
+
+
+
+One player is a Dwarf with an axe doing 1 - 4 damage.
+
+
+
+
+
+
+One player is a Wizard having one spell doing 1-8 damage.
+
+
+
+
+
+
+
+
+
+
+Move each round - there doesn’t have to be any “real” move. Your program can just say, “player x moved.” - this is a “round.”
+
+
+
+
+
+
+Each round has a 50% chance of an encounter.
+
+
+
+
+
+
+The type of encounters are equally likely and include:
+
+
+
+
+
+
+Fight a monster. You define any 6 monsters with at least 3 levels of hierarchy.  Fighting is simple - there is only one melee round and the monster attacks the player one time and inflicts a certain amount of damage using a certain type of attack. i.e., one monster might attack with a sword and do 1-6 damage, another with an axe and 1-4 damage and another with a spell 1-6 damage. The player then attacks  one time.  
+
+
+
+
+
+
+A treasure chest is found with a certain number of gold pieces. 
+
+
+
+
+
+
+A treasure chest is found with a potion which restores a random amount of hit points.
+
+
+
+
+
+
+
+
+
+
+If there is no encounter, add one to the health of the player (i.e., they are recuperating and resting)
+
+
+
+
+
+
+For each round, update all the player stats, which should include:
+
+
+
+
+
+
+Hitpoints
+
+
+
+
+
+
+Gold pieces
+
+
+
+
+
+
+Number of monsters beaten
+
+
+
+
+
+
+Number of turns alive
