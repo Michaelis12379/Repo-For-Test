@@ -1,0 +1,137 @@
+import random
+
+class User:
+    def __init__(self, name, role):
+        self.role = role
+        self.name = name
+        self.hit_points = 100
+        self.gold = 10
+        self.turns_alive = 0
+        self.monsters_beaten = 0
+
+#user moves
+    def players_move(self):
+        self.turns_alive += 1
+
+#the function if you got hit
+    def got_damaged(self, damage):
+        self.hit_points -= damage
+        if self.hit_points < 0:
+           self.hit_points = 0
+
+#the function to heal
+    def recover_heal_health(self, amount):
+        self.hit_points += amount
+        if self.hit_points > 100:
+            self.hit_points = 100
+
+    def earn_gold_pieces(self, amount):
+        self.gold += amount
+
+#this is the class for the Dwarf player
+class Dwarf(User):
+    def __init__(self, name):
+        super().__init__(name, "Dwarf")
+        self.damage_range = (1, 4)
+
+#the attack for the dwarf
+    def attack(self):
+        return random.randint(self.damage_range[0], self.damage_range[1])
+
+#this is the class for the Wizard player
+class Wizard(User):
+    def __init__(self, name):
+        super().__init__(name, "Wizard")
+        self.damage_range = (1,8)  
+
+#the attack for the wizard
+    def attack(self):
+        return random.randint(self.damage_range[0], self.damage_range[1])
+    
+#you encountered a monster! 
+class Monster:
+    def __init__(self, name, damage_range):
+        self.name = name
+        self.damage_range = damage_range
+
+    def attack(self):
+        return random.randint(self.damage_range[0], self.damage_range[1])
+
+#you are at an encounter, better be lucky!
+class encounter:
+    def __init__(self):
+        self.encounter_type = random.choice(["fight", "treasure", "heal"])
+
+    def resolve(self, player):
+        if self.encounter_type == "fight":
+            self.fight(player)
+        elif self.encounter_type == "treasure":
+            self.treasure(player)
+        elif self.encounter_type == "heal":
+            self.heal(player)
+
+    def fight(self, player):
+        # This is a set of monsters with different attack strategies
+        monsters = [  
+            Monster("Orc", (1, 7)),  
+            Monster("Zombie", (2, 3)), 
+            Monster("Bandit", (1, 2)), 
+        ]
+
+        monster = random.choice(monsters)
+        print(f"A {monster.name} has shown up to fight you! GOOD LUCK!")
+
+        monster_damage = monster.attack()
+        print(f"The {monster.name} has attacked you and deals {monster_damage} damage to you, OUCH!")
+        player.take_damage(monster_damage)
+
+        player_damage = player.attack()
+        print(f"{player.name} attacks the monster and deals {player_damage} damage to the enemy. GOOD JOB!")
+        return player_damage, monster_damage
+
+    def treasure(self, player):
+        gold_found = random.randint(1, 10)
+        print(f"You found a treasure chest with {gold_found} gold! YAY!")
+        player.earn_gold(gold_found)
+
+    def heal(self, player):
+        healing = random.randint(5, 20)
+        print(f"A potion is found in a chest and heals {healing} hit points for you! YAY!")
+        player.heal(healing)
+
+class Game:
+    def __init__(self, player1, player2):
+        self.players = [player1, player2]
+        self.round = 0
+
+    def start(self):
+        while all(player.hit_points > 0 for player in self.players):
+            self.round += 1
+            print(f"\n--- Round {self.round} ---")
+            for players_move in self.players:
+                User.move()
+                print(f"{players_move.name} the {players_move.role} moves.")
+                encounter_chance = random.random()
+                if encounter_chance < 0.50:
+                    encounter = encounter()
+                    encounter.resolve(players_move)
+                else:
+                    print(f"{players_move.name} looks like they needed a rest(They restore 1 hp)")
+                    players_move.heal(1)
+
+                if players_move.hit_points <= 0:
+                    print(f"{players_move.name} has been slayed. BETTER LUCK NEXT TIME! BYE!")
+                    return
+            self.print_stats()
+
+    def print_stats(self):
+        for player in self.players:
+            print(f"{player.name} - HP: {player.hit_points}, Gold: {player.gold}, Monsters Beaten: {player.monsters_beaten}, Turns Alive: {player.turns_alive}")
+
+# The players
+player1 = Dwarf("Michael")
+player2 = Wizard("David")
+
+#How the game starts
+game = Game(player1, player2)
+game.start()
